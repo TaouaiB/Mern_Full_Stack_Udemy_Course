@@ -1,10 +1,14 @@
+// 1- Core Module
+const path = require('path');
+
+// 2- Part Modules
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 
 dotenv.config({ path: 'config.env' });
 const ApiError = require('./utils/apiError');
-const globalError = require('./errorMiddleware/errorMiddleware');
+const globalError = require('./middlewares/errorMiddleware');
 const dbConnection = require('./config/database');
 
 // Routes
@@ -21,6 +25,7 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 if (process.env.Node_ENV === 'development') {
 	app.use(morgan('dev'));

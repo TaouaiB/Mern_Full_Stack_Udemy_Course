@@ -1,7 +1,7 @@
 const { check, body } = require('express-validator');
 const slugify = require('slugify');
 const { ValidatorsImpl } = require('express-validator/lib/chain');
-const validatorMiddleware = require('../../errorMiddleware/validatorMiddleware');
+const validatorMiddleware = require('../../middlewares/validatorMiddleware');
 const Category = require('../../models/categoryModel');
 const SubCategory = require('../../models/subCategoryModel');
 
