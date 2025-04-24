@@ -16,6 +16,8 @@ const categoryRoute = require('./routes/categoryRoute');
 const subCategoriesRoute = require('./routes/subCategoryRoute');
 const brandRoute = require('./routes/brandRoute');
 const productRoute = require('./routes/productRoute');
+const userRoute = require('./routes/userRoute');
+const authRoute = require('./routes/authRoute');
 
 // Connect with db
 dbConnection();
@@ -28,8 +30,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'uploads')));
 
 if (process.env.Node_ENV === 'development') {
-	app.use(morgan('dev'));
-	console.log(`mode: ${process.env.Node_ENV}`);
+  app.use(morgan('dev'));
+  console.log(`mode: ${process.env.Node_ENV}`);
 }
 
 // Mount Routes
@@ -37,9 +39,11 @@ app.use('/api/v1/categories', categoryRoute);
 app.use('/api/v1/subcategories', subCategoriesRoute);
 app.use('/api/v1/brands', brandRoute);
 app.use('/api/v1/products', productRoute);
+app.use('/api/v1/users', userRoute);
+app.use('/api/v1/auth', authRoute);
 
 app.all('*', (req, res, next) => {
-	next(new ApiError(`can't find this route: ${req.originalUrl}`, 400));
+  next(new ApiError(`can't find this route: ${req.originalUrl}`, 400));
 });
 
 // Global Error Handling Middleware for express
@@ -47,15 +51,15 @@ app.use(globalError);
 
 const PORT = process.env.PORT || 8000;
 const server = app.listen(PORT, () => {
-	console.log(`App running on port ${PORT}`);
+  console.log(`App running on port ${PORT}`);
 });
 
 // Handle rejection outside express
 process.on('unhandledRejection', (err) => {
-	console.error(`unhandledRejection Errors: ${err.name} | ${err.message}`);
-	// it will close the server , then close anything inside like process ( application )
-	server.close(() => {
-		console.error(`Shutting down ...`);
-		process.exit(1);
-	});
+  console.error(`unhandledRejection Errors: ${err.name} | ${err.message}`);
+  // it will close the server , then close anything inside like process ( application )
+  server.close(() => {
+    console.error(`Shutting down ...`);
+    process.exit(1);
+  });
 });
